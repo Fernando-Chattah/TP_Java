@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Documento MongoDB para la entidad Task.
+ * Documento MongoDB para la entidad Product.
  * Spring Data MongoDB usa anotaciones específicas para mapear a la colección.
  */
 @Data

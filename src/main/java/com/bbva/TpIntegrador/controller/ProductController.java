@@ -36,7 +36,7 @@ public class ProductController {
      * Crea una nueva tarea y la guarda en MongoDB Atlas.
      * Spring Data MongoDB maneja automáticamente la generación de IDs.
      */
-    @PostMapping("/tasks/mongo")
+    @PostMapping("/products")
     public ResponseEntity<ProductResponse> createProductInMongo(@Valid @RequestBody ProductRequest request) {
         // Convertir DTO a entidad de dominio
         Product product = new Product(request.getNombre(), request.getPrecio(), request.getStock());

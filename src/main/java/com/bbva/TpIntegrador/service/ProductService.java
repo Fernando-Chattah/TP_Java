@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Servicio que orquesta las operaciones con MongoDB y Firebase Firestore.
- * Demuestra cómo la misma entidad Task puede ser persistida en dos proveedores NoSQL diferentes.
+ * Demuestra cómo la misma entidad Product puede ser persistida en dos proveedores NoSQL diferentes.
  * Este servicio funciona con MongoDB siempre, y con Firebase solo si está configurado.
  */
 @Service

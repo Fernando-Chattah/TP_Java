@@ -19,7 +19,7 @@ public class ProductResponse {
     private int stock;
 
     /**
-     * Constructor para crear respuesta desde una entidad Task
+     * Constructor para crear respuesta desde una entidad Product
      */
     public ProductResponse(Product product) {
         this.nombre = product.getNombre();

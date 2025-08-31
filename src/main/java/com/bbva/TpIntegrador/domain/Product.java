@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Entidad de dominio Task que representa una tarea.
+ * Entidad de dominio Product que representa una tarea.
  * Esta clase es independiente de la tecnología de persistencia.
  */
 @Data
