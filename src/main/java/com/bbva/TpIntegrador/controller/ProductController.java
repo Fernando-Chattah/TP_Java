@@ -49,7 +49,22 @@ public class ProductController {
         
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    
+
+    /**
+     * Busca todas las tareas en MongoDB Atlas.
+     */
+    @GetMapping("/product/")
+    public ResponseEntity<ProductResponse> getProductsFromMongo() {
+        Product product = productService.findAllfromMongo();
+
+        if (product != null) {
+            ProductResponse response = new ProductResponse(product);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     /**
      * Busca una tarea por ID en MongoDB Atlas.
      */

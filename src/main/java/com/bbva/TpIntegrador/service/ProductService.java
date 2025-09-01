@@ -49,6 +49,10 @@ public class ProductService {
             .map(mongoMapper::toDomain)
             .orElse(null);
     }
+
+    public Product findAllfromMongo() {
+        return (Product) mongoRepository.findAll().stream().map(mongoMapper::toDomain);
+    }
     
      /**
      * Actualiza una tarea en MongoDB.
