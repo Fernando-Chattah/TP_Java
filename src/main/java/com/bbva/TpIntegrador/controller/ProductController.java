@@ -4,11 +4,12 @@ import com.bbva.TpIntegrador.domain.Product;
 import com.bbva.TpIntegrador.service.ProductService;
 import com.bbva.TpIntegrador.web.ProductRequest;
 import com.bbva.TpIntegrador.web.ProductResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controlador REST para operaciones con tareas.
@@ -25,19 +26,11 @@ public class ProductController {
     }
     
     /**
-     * Endpoint de prueba simple
-     */
-    @GetMapping("/hello")
-    public String hello() {
-        return "HELLO";
-    }
-    
-    /**
      * Crea una nueva tarea y la guarda en MongoDB Atlas.
      * Spring Data MongoDB maneja automáticamente la generación de IDs.
      */
-    @PostMapping("/products")
-    public ResponseEntity<ProductResponse> createProductInMongo(@Valid @RequestBody ProductRequest request) {
+    @PostMapping("/product")
+    public ResponseEntity<ProductResponse> createProductInMongo(@RequestBody ProductRequest request) {
         // Convertir DTO a entidad de dominio
         Product product = new Product(request.getNombre(), request.getPrecio(), request.getStock());
         
@@ -53,15 +46,14 @@ public class ProductController {
     /**
      * Busca todas las tareas en MongoDB Atlas.
      */
-    @GetMapping("/product/")
-    public ResponseEntity<ProductResponse> getProductsFromMongo() {
-        Product product = productService.findAllfromMongo();
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProductsMongo() {
+        List<Product> product = productService.finAllProducts();
 
-        if (product != null) {
-            ProductResponse response = new ProductResponse(product);
-            return ResponseEntity.ok(response);
+        if (product.isEmpty()) {
+            return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(product);
         }
     }
 
@@ -78,5 +70,11 @@ public class ProductController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable String id) {
+        productService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

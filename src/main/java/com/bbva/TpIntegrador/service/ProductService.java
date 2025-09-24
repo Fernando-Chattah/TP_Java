@@ -7,6 +7,9 @@ import com.bbva.TpIntegrador.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Servicio que orquesta las operaciones con MongoDB y Firebase Firestore.
  * Demuestra cómo la misma entidad Product puede ser persistida en dos proveedores NoSQL diferentes.
@@ -50,10 +53,6 @@ public class ProductService {
             .orElse(null);
     }
 
-    public Product findAllfromMongo() {
-        return (Product) mongoRepository.findAll().stream().map(mongoMapper::toDomain);
-    }
-    
      /**
      * Actualiza una tarea en MongoDB.
      */
@@ -61,6 +60,14 @@ public class ProductService {
         ProductDocument document = mongoMapper.toDocument(product);
         ProductDocument updatedDocument = mongoRepository.save(document);
         return mongoMapper.toDomain(updatedDocument);
+    }
+
+    public List<Product> finAllProducts() {
+        return mongoRepository.findAll().stream().map(mongoMapper::toDomain).toList();
+    }
+
+    public void deleteById(String id) {
+        mongoRepository.deleteById(id);
     }
 
 }
