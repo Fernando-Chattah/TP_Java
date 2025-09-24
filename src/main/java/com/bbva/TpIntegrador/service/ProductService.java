@@ -5,28 +5,33 @@ import com.bbva.TpIntegrador.adapters.mongo.MongoProductRepository;
 import com.bbva.TpIntegrador.adapters.mongo.ProductDocument;
 import com.bbva.TpIntegrador.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-/**
- * Servicio que orquesta las operaciones con MongoDB y Firebase Firestore.
- * Demuestra cómo la misma entidad Product puede ser persistida en dos proveedores NoSQL diferentes.
- * Este servicio funciona con MongoDB siempre, y con Firebase solo si está configurado.
- */
 @Service
+@Component
 public class ProductService {
     
     private final MongoProductRepository mongoRepository;
     private final MongoProductMapper mongoMapper;
+    private final Executor executor;
+
+    @Value("${base}")
+    private int base;
 
     @Autowired
     public ProductService(MongoProductRepository mongoRepository,
-                          MongoProductMapper mongoMapper)
+                          MongoProductMapper mongoMapper,
+                          Executor executor)
     {
         this.mongoRepository = mongoRepository;
         this.mongoMapper = mongoMapper;
+        this.executor = executor;
     }
     
     /**
@@ -47,12 +52,15 @@ public class ProductService {
     /**
      * Busca una tarea por ID en MongoDB.
      */
+
     public Product findByIdFromMongo(String id) {
+        System.out.println(base);
         return mongoRepository.findById(id)
-            .map(mongoMapper::toDomain)
-            .orElse(null);
+                            .map(mongoMapper::toDomain)
+                            .orElse(null);
     }
 
+    /*
      /**
      * Actualiza una tarea en MongoDB.
      */

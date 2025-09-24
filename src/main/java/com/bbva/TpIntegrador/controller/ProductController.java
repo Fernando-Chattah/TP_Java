@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Controlador REST para operaciones con tareas.
@@ -63,7 +64,7 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public ResponseEntity<ProductResponse> getProductFromMongo(@PathVariable String id) {
         Product product = productService.findByIdFromMongo(id);
-        
+
         if (product != null) {
             ProductResponse response = new ProductResponse(product);
             return ResponseEntity.ok(response);
