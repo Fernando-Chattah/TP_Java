@@ -49,7 +49,7 @@ public class ProductController {
      */
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProductsMongo() {
-        List<Product> product = productService.finAllProducts();
+        List<Product> product = productService.finAllProducts().join();
 
         if (product.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -78,4 +78,12 @@ public class ProductController {
         productService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<ProductResponse> updateInMongo(@PathVariable Product producto) {
+        productService.updateInMongo(producto);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

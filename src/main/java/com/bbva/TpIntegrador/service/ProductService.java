@@ -6,6 +6,7 @@ import com.bbva.TpIntegrador.adapters.mongo.ProductDocument;
 import com.bbva.TpIntegrador.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,6 @@ public class ProductService {
     private final MongoProductMapper mongoMapper;
     private final Executor executor;
 
-    @Value("${base}")
-    private int base;
 
     @Autowired
     public ProductService(MongoProductRepository mongoRepository,
@@ -54,7 +53,6 @@ public class ProductService {
      */
 
     public Product findByIdFromMongo(String id) {
-        System.out.println(base);
         return mongoRepository.findById(id)
                             .map(mongoMapper::toDomain)
                             .orElse(null);
@@ -70,8 +68,16 @@ public class ProductService {
         return mongoMapper.toDomain(updatedDocument);
     }
 
-    public List<Product> finAllProducts() {
-        return mongoRepository.findAll().stream().map(mongoMapper::toDomain).toList();
+
+    @Async("taskExecutor")
+    public CompletableFuture<List<Product>> finAllProducts() {
+        return CompletableFuture.supplyAsync(()->
+               mongoRepository.findAll().stream()
+                       .map(mongoMapper::toDomain)
+                       .toList()
+                , executor
+        );
+/*        return mongoRepository.findAll().stream().map(mongoMapper::toDomain).toList();*/
     }
 
     public void deleteById(String id) {
